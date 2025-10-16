@@ -30,7 +30,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 10px;
+            padding: 5px 0;
             touch-action: manipulation;
             -webkit-touch-callout: none;
             -webkit-user-select: none;
@@ -895,16 +895,46 @@
                         
                         // Mobil destek: double tap ve uzun basma
                         let touchTimer;
-                        let lastTap = 0;
+                        let lastTapTime = 0;
+                        let tapCount = 0;
+                        let singleTapTimer = null;
+                        let touchMoved = false;
                         
                         cell.addEventListener('touchstart', (e) => {
-                            const now = Date.now();
-                            const timeSinceLastTap = now - lastTap;
+                            touchMoved = false;
                             
-                            // Double tap detection (300ms içinde)
-                            if (timeSinceLastTap < 300 && timeSinceLastTap > 0) {
-                                clearTimeout(touchTimer);
-                                e.preventDefault();
+                            // Uzun basma timer başlat (200ms)
+                            touchTimer = setTimeout(() => {
+                                if (!this.revealed[row][col] && !touchMoved) {
+                                    e.preventDefault();
+                                    this.handleRightClick(e, row, col);
+                                    navigator.vibrate && navigator.vibrate(50);
+                                    tapCount = 0; // Uzun basma oldu, tap count'u sıfırla
+                                }
+                            }, 200);
+                        });
+                        
+                        cell.addEventListener('touchmove', () => {
+                            touchMoved = true;
+                            clearTimeout(touchTimer);
+                            clearTimeout(singleTapTimer);
+                        });
+                        
+                        cell.addEventListener('touchend', (e) => {
+                            clearTimeout(touchTimer);
+                            e.preventDefault(); // Default click'i engelle
+                            
+                            // Eğer hareket ettiyse hiçbir şey yapma
+                            if (touchMoved) return;
+                            
+                            const now = Date.now();
+                            const timeSinceLastTap = now - lastTapTime;
+                            
+                            // Eğer 300ms içinde ikinci tap ise - DOUBLE TAP
+                            if (timeSinceLastTap < 300 && tapCount === 1) {
+                                clearTimeout(singleTapTimer);
+                                tapCount = 0;
+                                lastTapTime = 0;
                                 
                                 // Eğer hücre açılmışsa expand, değilse bayrak
                                 if (this.revealed[row][col]) {
@@ -913,27 +943,20 @@
                                     this.handleRightClick(e, row, col);
                                     navigator.vibrate && navigator.vibrate(30);
                                 }
-                                lastTap = 0;
-                                return;
+                            } else {
+                                // İlk tap veya timeout'dan sonraki tap
+                                tapCount = 1;
+                                lastTapTime = now;
+                                
+                                // 300ms bekle, eğer ikinci tap gelmezse single tap işle
+                                clearTimeout(singleTapTimer);
+                                singleTapTimer = setTimeout(() => {
+                                    if (tapCount === 1) {
+                                        this.handleCellClick(e, row, col);
+                                        tapCount = 0;
+                                    }
+                                }, 300);
                             }
-                            
-                            lastTap = now;
-                            
-                            // Uzun basma ile bayrak (200ms)
-                            touchTimer = setTimeout(() => {
-                                if (!this.revealed[row][col]) {
-                                    this.handleRightClick(e, row, col);
-                                    navigator.vibrate && navigator.vibrate(50);
-                                }
-                            }, 200);
-                        });
-                        
-                        cell.addEventListener('touchend', () => {
-                            clearTimeout(touchTimer);
-                        });
-                        
-                        cell.addEventListener('touchmove', () => {
-                            clearTimeout(touchTimer);
                         });
                         
                         boardElement.appendChild(cell);
