@@ -925,6 +925,7 @@
                         // Mobil destek: double tap ve uzun basma
                         let touchTimer;
                         let lastTapTime = 0;
+                        let singleTapTimer = null;
                         let doubleTapProcessed = false;
                         let touchMoved = false;
                         
@@ -938,6 +939,7 @@
                                     this.handleRightClick(e, row, col);
                                     navigator.vibrate && navigator.vibrate(50);
                                     doubleTapProcessed = true; // Uzun basma oldu
+                                    clearTimeout(singleTapTimer);
                                 }
                             }, 200);
                         });
@@ -945,6 +947,7 @@
                         cell.addEventListener('touchmove', () => {
                             touchMoved = true;
                             clearTimeout(touchTimer);
+                            clearTimeout(singleTapTimer);
                         });
                         
                         cell.addEventListener('touchend', (e) => {
@@ -963,6 +966,7 @@
                             
                             // Eğer 250ms içinde ikinci tap ise - DOUBLE TAP
                             if (timeSinceLastTap < 250 && timeSinceLastTap > 0) {
+                                clearTimeout(singleTapTimer);
                                 lastTapTime = 0;
                                 
                                 // Eğer hücre açılmışsa expand, değilse bayrak
@@ -973,9 +977,12 @@
                                     navigator.vibrate && navigator.vibrate(30);
                                 }
                             } else {
-                                // Single tap - ANINDA işle
+                                // Single tap - 100ms sonra işle (double tap için şans ver)
                                 lastTapTime = now;
-                                this.handleCellClick(e, row, col);
+                                clearTimeout(singleTapTimer);
+                                singleTapTimer = setTimeout(() => {
+                                    this.handleCellClick(e, row, col);
+                                }, 100);
                             }
                         });
                         
