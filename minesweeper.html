@@ -682,9 +682,10 @@
         <div class="instructions">
             <h4>Nasıl Oynanır:</h4>
             <ul>
-                <li><strong>Tık / Tap:</strong> Hücreyi aç</li>
-                <li><strong>Sağ Tık / Uzun Bas (0.5s):</strong> Bayrak koy/kaldır</li>
-                <li><strong>Çift Tık / Çift Tap:</strong> Bayraklar yeterliyse etrafı aç (hızlı oyun!)</li>
+                <li><strong>Tek Tık/Tap:</strong> Hücreyi aç</li>
+                <li><strong>Çift Tık/Tap:</strong> Kapalı hücrede → Bayrak koy/kaldır | Açık hücrede → Etrafı aç</li>
+                <li><strong>Sağ Tık:</strong> Bayrak koy/kaldır (PC)</li>
+                <li><strong>Uzun Bas (0.2s):</strong> Bayrak koy/kaldır (Mobil)</li>
                 <li><strong>Hedef:</strong> Tüm mayınları bayraklayarak veya mayınsız hücreleri açarak kazanın</li>
                 <li><strong>Sayılar:</strong> Etrafındaki mayın sayısını gösterir</li>
                 <li><strong>İpucu:</strong> İlk tıklamanız asla mayın olmaz</li>
@@ -892,17 +893,45 @@
                         cell.addEventListener('dblclick', (e) => this.handleDoubleClick(e, row, col));
                         cell.addEventListener('contextmenu', (e) => this.handleRightClick(e, row, col));
                         
-                        // Mobil destek: uzun basma ile bayrak
+                        // Mobil destek: double tap ve uzun basma
                         let touchTimer;
+                        let lastTap = 0;
+                        
                         cell.addEventListener('touchstart', (e) => {
+                            const now = Date.now();
+                            const timeSinceLastTap = now - lastTap;
+                            
+                            // Double tap detection (300ms içinde)
+                            if (timeSinceLastTap < 300 && timeSinceLastTap > 0) {
+                                clearTimeout(touchTimer);
+                                e.preventDefault();
+                                
+                                // Eğer hücre açılmışsa expand, değilse bayrak
+                                if (this.revealed[row][col]) {
+                                    this.handleDoubleClick(e, row, col);
+                                } else {
+                                    this.handleRightClick(e, row, col);
+                                    navigator.vibrate && navigator.vibrate(30);
+                                }
+                                lastTap = 0;
+                                return;
+                            }
+                            
+                            lastTap = now;
+                            
+                            // Uzun basma ile bayrak (200ms)
                             touchTimer = setTimeout(() => {
-                                this.handleRightClick(e, row, col);
-                                navigator.vibrate && navigator.vibrate(50);
-                            }, 500); // 500ms uzun basma
+                                if (!this.revealed[row][col]) {
+                                    this.handleRightClick(e, row, col);
+                                    navigator.vibrate && navigator.vibrate(50);
+                                }
+                            }, 200);
                         });
+                        
                         cell.addEventListener('touchend', () => {
                             clearTimeout(touchTimer);
                         });
+                        
                         cell.addEventListener('touchmove', () => {
                             clearTimeout(touchTimer);
                         });
@@ -954,7 +983,14 @@
             handleDoubleClick(e, row, col) {
                 e.preventDefault();
                 if (this.gameOver || this.gameWon) return;
-                if (!this.revealed[row][col]) return;
+                
+                // Eğer hücre açılmamışsa, double click ile bayrak koy/kaldır
+                if (!this.revealed[row][col]) {
+                    this.handleRightClick(e, row, col);
+                    return;
+                }
+                
+                // Açılmış hücrede expand işlemi
                 if (this.board[row][col] === 0 || this.board[row][col] === 'M') return;
 
                 // Etrafındaki bayrakları say
