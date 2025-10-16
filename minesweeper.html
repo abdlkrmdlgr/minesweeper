@@ -49,7 +49,7 @@
             background: #c0c0c0;
             border: 3px solid;
             border-color: #fff #808080 #808080 #fff;
-            padding: 5px;
+            padding: 3px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
             max-width: 100%;
             width: 100%;
@@ -68,12 +68,12 @@
             background: #c0c0c0;
             border: 3px solid;
             border-color: #808080 #fff #fff #808080;
-            padding: 5px;
-            margin-bottom: 5px;
+            padding: 3px;
+            margin-bottom: 3px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 5px;
+            gap: 3px;
         }
 
         @media (min-width: 769px) {
@@ -174,7 +174,7 @@
             background: #c0c0c0;
             border: 3px solid;
             border-color: #808080 #fff #fff #808080;
-            padding: 5px;
+            padding: 3px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -196,8 +196,8 @@
         }
 
         .cell {
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             background: #c0c0c0;
             border: 3px solid;
             border-color: #fff #808080 #808080 #fff;
@@ -206,10 +206,18 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 20px;
             user-select: none;
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
+        }
+
+        @media (min-width: 769px) {
+            .cell {
+                width: 30px;
+                height: 30px;
+                font-size: 18px;
+            }
         }
 
         .cell:active {
@@ -223,7 +231,13 @@
 
         .cell.flagged::before {
             content: '🚩';
-            font-size: 18px;
+            font-size: 20px;
+        }
+
+        @media (min-width: 769px) {
+            .cell.flagged::before {
+                font-size: 18px;
+            }
         }
 
         .cell.mine-red {
@@ -293,10 +307,16 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 35px;
+            font-size: 40px;
             animation: explosionIcon 0.5s ease-out;
             pointer-events: none;
             text-shadow: 0 0 10px rgba(255, 150, 0, 0.8);
+        }
+
+        @media (min-width: 769px) {
+            .cell.mine-exploded::after {
+                font-size: 35px;
+            }
         }
 
         @keyframes explosionIcon {
@@ -321,7 +341,13 @@
 
         .cell.wrong-flag::before {
             content: '❌';
-            font-size: 18px;
+            font-size: 20px;
+        }
+
+        @media (min-width: 769px) {
+            .cell.wrong-flag::before {
+                font-size: 18px;
+            }
         }
 
         .cell[data-number="1"] { color: #0000ff; }
@@ -879,8 +905,11 @@
             renderBoard() {
                 const boardElement = document.getElementById('board');
                 boardElement.innerHTML = '';
-                boardElement.style.gridTemplateColumns = `repeat(${this.config.cols}, 30px)`;
-                boardElement.style.gridTemplateRows = `repeat(${this.config.rows}, 30px)`;
+                
+                // Mobilde daha büyük hücreler
+                const cellSize = window.innerWidth < 769 ? '35px' : '30px';
+                boardElement.style.gridTemplateColumns = `repeat(${this.config.cols}, ${cellSize})`;
+                boardElement.style.gridTemplateRows = `repeat(${this.config.rows}, ${cellSize})`;
 
                 for (let row = 0; row < this.config.rows; row++) {
                     for (let col = 0; col < this.config.cols; col++) {
