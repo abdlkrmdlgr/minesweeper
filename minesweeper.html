@@ -1237,13 +1237,14 @@
             showDetailedStats(won) {
                 const totalClicks = this.leftClicks + this.rightClicks;
                 
-                // Efficiency hesaplama - sadece kazanıldığında anlamlı
+                // Efficiency hesaplama - 3BV sadece hücre açma tıklamalarını sayar (bayrakları değil!)
                 let efficiency = 0;
-                if (won && totalClicks > 0) {
-                    efficiency = Math.min(100, ((this.bbbv / totalClicks) * 100)).toFixed(0);
-                } else if (!won && totalClicks > 0) {
+                if (won && this.leftClicks > 0) {
+                    // Doğru hesaplama: 3BV / Sol Tıklamalar (bayraklar hariç)
+                    efficiency = ((this.bbbv / this.leftClicks) * 100).toFixed(0);
+                } else if (!won && this.leftClicks > 0) {
                     // Kaybedildiğinde, çözülen 3BV'leri kullan
-                    efficiency = Math.min(100, ((this.bbbvSolved / totalClicks) * 100)).toFixed(0);
+                    efficiency = ((this.bbbvSolved / this.leftClicks) * 100).toFixed(0);
                 }
                 
                 const bbbvPerSecond = this.timer > 0 ? (this.bbbvSolved / this.timer).toFixed(4) : 0;
