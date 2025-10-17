@@ -649,6 +649,19 @@
                 <button class="diff-btn" onclick="game.applyCustomSettings()">Uygula</button>
             </div>
             
+            <h3 style="margin-top: 20px;">Ses Ayarları</h3>
+            <div style="padding: 10px 0;">
+                <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <input type="checkbox" id="soundToggle" checked 
+                           onchange="game.toggleSound(this.checked)"
+                           style="transform: scale(1.2);">
+                    <strong>Patlama Sesi</strong>
+                </label>
+                <div style="font-size: 11px; color: #666;">
+                    Mayın patladığında ses çalınır
+                </div>
+            </div>
+            
             <h3 style="margin-top: 20px;">Mobil Kontroller</h3>
             <div style="padding: 10px 0;">
                 <label style="display: block; margin-bottom: 5px;">
@@ -767,6 +780,9 @@
                 // Tap delay ayarı
                 this.tapDelay = parseInt(localStorage.getItem('tapDelay') || '200');
                 
+                // Ses ayarı
+                this.soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
+                
                 this.loadStats();
                 this.init();
                 this.setupEventListeners();
@@ -774,6 +790,9 @@
 
 
             playExplosionSound() {
+                // Ses kapalıysa çalma
+                if (!this.soundEnabled) return;
+                
                 try {
                     // MP3 dosyasını çal
                     const audio = new Audio('./explosion.mp3');
@@ -1442,6 +1461,11 @@
                 document.getElementById('tapDelayValue').textContent = this.tapDelay;
             }
 
+            toggleSound(enabled) {
+                this.soundEnabled = enabled;
+                localStorage.setItem('soundEnabled', this.soundEnabled);
+            }
+
             loadStats() {
                 this.stats = {
                     gamesPlayed: parseInt(localStorage.getItem('gamesPlayed') || '0'),
@@ -1490,6 +1514,9 @@
         // Tap delay slider'ı ayarla
         document.getElementById('tapDelaySlider').value = game.tapDelay;
         document.getElementById('tapDelayValue').textContent = game.tapDelay;
+        
+        // Ses toggle'ı ayarla
+        document.getElementById('soundToggle').checked = game.soundEnabled;
 
         // Service Worker kaydı (PWA)
         if ('serviceWorker' in navigator) {
