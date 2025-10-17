@@ -648,6 +648,19 @@
                 </label>
                 <button class="diff-btn" onclick="game.applyCustomSettings()">Uygula</button>
             </div>
+            
+            <h3 style="margin-top: 20px;">Mobil Kontroller</h3>
+            <div style="padding: 10px 0;">
+                <label style="display: block; margin-bottom: 5px;">
+                    <strong>Tap Gecikmesi:</strong> <span id="tapDelayValue">200</span>ms
+                </label>
+                <input type="range" id="tapDelaySlider" min="50" max="300" value="200" step="10" 
+                       style="width: 100%; cursor: pointer;"
+                       oninput="game.updateTapDelay(this.value)">
+                <div style="font-size: 11px; color: #666; margin-top: 5px;">
+                    Düşük değer = Hızlı tap, ama double tap zor | Yüksek değer = Kolay double tap, ama yavaş
+                </div>
+            </div>
         </div>
 
         <div class="stats">
@@ -750,6 +763,9 @@
                 this.rightClicks = 0;
                 this.bbbv = 0; // Board Benchmark Value (3BV)
                 this.bbbvSolved = 0;
+                
+                // Tap delay ayarı
+                this.tapDelay = parseInt(localStorage.getItem('tapDelay') || '200');
                 
                 this.loadStats();
                 this.init();
@@ -977,12 +993,12 @@
                                     navigator.vibrate && navigator.vibrate(30);
                                 }
                             } else {
-                                // Single tap - 100ms sonra işle (double tap için şans ver)
+                                // Single tap - tapDelay sonra işle (double tap için şans ver)
                                 lastTapTime = now;
                                 clearTimeout(singleTapTimer);
                                 singleTapTimer = setTimeout(() => {
                                     this.handleCellClick(e, row, col);
-                                }, 100);
+                                }, this.tapDelay);
                             }
                         });
                         
@@ -1224,10 +1240,10 @@
                 // Efficiency hesaplama - sadece kazanıldığında anlamlı
                 let efficiency = 0;
                 if (won && totalClicks > 0) {
-                    efficiency = ((this.bbbv / totalClicks) * 100).toFixed(0);
+                    efficiency = Math.min(100, ((this.bbbv / totalClicks) * 100)).toFixed(0);
                 } else if (!won && totalClicks > 0) {
                     // Kaybedildiğinde, çözülen 3BV'leri kullan
-                    efficiency = ((this.bbbvSolved / totalClicks) * 100).toFixed(0);
+                    efficiency = Math.min(100, ((this.bbbvSolved / totalClicks) * 100)).toFixed(0);
                 }
                 
                 const bbbvPerSecond = this.timer > 0 ? (this.bbbvSolved / this.timer).toFixed(4) : 0;
@@ -1391,6 +1407,12 @@
                 this.init();
             }
 
+            updateTapDelay(value) {
+                this.tapDelay = parseInt(value);
+                localStorage.setItem('tapDelay', this.tapDelay);
+                document.getElementById('tapDelayValue').textContent = this.tapDelay;
+            }
+
             loadStats() {
                 this.stats = {
                     gamesPlayed: parseInt(localStorage.getItem('gamesPlayed') || '0'),
@@ -1435,6 +1457,10 @@
 
         // Oyunu başlat
         const game = new Minesweeper();
+        
+        // Tap delay slider'ı ayarla
+        document.getElementById('tapDelaySlider').value = game.tapDelay;
+        document.getElementById('tapDelayValue').textContent = game.tapDelay;
 
         // Service Worker kaydı (PWA)
         if ('serviceWorker' in navigator) {
