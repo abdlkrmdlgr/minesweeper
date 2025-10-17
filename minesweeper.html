@@ -772,6 +772,24 @@
                 this.setupEventListeners();
             }
 
+
+            playExplosionSound() {
+                try {
+                    // MP3 dosyasını çal
+                    const audio = new Audio('./explosion.mp3');
+                    audio.volume = 0.6; // Ses seviyesi
+                    
+                    // Başlangıçtaki boşluğu atla (0.3 saniye)
+                    audio.currentTime = 0.4;
+                    
+                    audio.play().catch(e => {
+                        console.log('Ses çalma hatası:', e);
+                    });
+                } catch (e) {
+                    console.log('Ses çalma hatası:', e);
+                }
+            }
+
             init() {
                 this.board = [];
                 this.revealed = [];
@@ -1026,6 +1044,10 @@
                     this.revealCell(row, col);
                     const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
                     cell.classList.add('mine-exploded');
+                    
+                    // Patlama sesi çal
+                    this.playExplosionSound();
+                    
                     this.endGame(false);
                     return;
                 }
@@ -1100,6 +1122,9 @@
                             const [r, c] = explodedMineCell;
                             const cell = document.querySelector(`[data-row="${r}"][data-col="${c}"]`);
                             cell.classList.add('mine-exploded');
+                            
+                            // Patlama sesi çal
+                            this.playExplosionSound();
                         }
                         this.endGame(false);
                     } else {
