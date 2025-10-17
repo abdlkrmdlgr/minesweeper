@@ -1065,6 +1065,9 @@
                 
                 // Eğer bayrak sayısı hücredeki sayıya eşitse, kalan hücreleri aç
                 if (flagCount === this.board[row][col]) {
+                    // Chord işlemi de bir sol tıklama sayılır
+                    this.leftClicks++;
+                    
                     let hitMine = false;
                     let explodedMineCell = null;
                     
