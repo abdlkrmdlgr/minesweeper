@@ -366,10 +366,45 @@
             padding: 20px;
             margin-top: 10px;
             display: none;
+            max-width: 100%;
+            width: 100%;
+        }
+
+        @media (min-width: 769px) {
+            .settings {
+                max-width: 400px;
+                margin: 10px auto 0;
+            }
         }
 
         .settings.active {
             display: block;
+        }
+
+        .settings.active ~ .game-board {
+            display: none !important;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .settings.active ~ .estimated-time {
+            display: none !important;
+        }
+
+        /* Settings aktifken sadece oyun alanını gizle */
+        .settings.active ~ .game-board,
+        .settings.active ~ .estimated-time {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+        }
+
+        /* Settings aktifken container'ın içindeki sadece oyun alanını gizle */
+        .container:has(.settings.active) .game-board,
+        .container:has(.settings.active) .estimated-time {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
         }
 
         .settings h3 {
@@ -410,6 +445,50 @@
 
         .custom-settings.active {
             display: flex;
+        }
+
+        .collapsible-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            padding: 10px;
+            background: #c0c0c0;
+            border: 3px solid;
+            border-color: #fff #808080 #808080 #fff;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .collapsible-header:hover {
+            background: #d0d0d0;
+        }
+
+        .collapsible-header.active {
+            border-color: #808080 #fff #fff #808080;
+            background: #a0a0a0;
+        }
+
+        .collapsible-content {
+            display: none;
+            padding: 15px;
+            background: #c0c0c0;
+            border: 3px solid;
+            border-color: #808080 #fff #fff #808080;
+            border-top: none;
+        }
+
+        .collapsible-content.active {
+            display: block;
+        }
+
+        .toggle-icon {
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-icon.rotated {
+            transform: rotate(180deg);
         }
 
         .custom-settings input {
@@ -481,6 +560,15 @@
             user-select: text;
             -webkit-user-select: text;
             display: none;
+            max-width: 100%;
+            width: 100%;
+        }
+
+        @media (min-width: 769px) {
+            .stats {
+                max-width: 400px;
+                margin: 10px auto 0;
+            }
         }
 
         .stats.active {
@@ -503,6 +591,15 @@
             user-select: text;
             -webkit-user-select: text;
             display: none;
+            max-width: 100%;
+            width: 100%;
+        }
+
+        @media (min-width: 769px) {
+            .instructions {
+                max-width: 400px;
+                margin: 10px auto 0;
+            }
         }
 
         .instructions.active {
@@ -531,6 +628,15 @@
             display: none;
             user-select: text;
             -webkit-user-select: text;
+            max-width: 100%;
+            width: 100%;
+        }
+
+        @media (min-width: 769px) {
+            .game-stats-detailed {
+                max-width: 400px;
+                margin: 10px auto 0;
+            }
         }
 
         .game-stats-detailed.active {
@@ -624,35 +730,55 @@
         <div class="game-board">
             <div class="board" id="board"></div>
         </div>
+        
+        <div class="estimated-time" id="estimatedTime" style="display: none; text-align: center; margin-top: 8px; font-size: 13px; color: #666; font-style: italic;">
+            <span id="estimatedTimeText">Tahmini süre: -</span>
+        </div>
 
         <div class="settings">
-            <h3>Zorluk Seviyesi</h3>
-            <div class="difficulty-btns">
-                <button class="diff-btn active" data-difficulty="beginner">Başlangıç (9x9)</button>
-                <button class="diff-btn" data-difficulty="intermediate">Orta (16x16)</button>
-                <button class="diff-btn" data-difficulty="expert">Uzman (16x30)</button>
-                <button class="diff-btn" data-difficulty="custom">Özel</button>
+            <div class="collapsible-header" id="customSizeHeader">
+                <span>Özel Boyutlar</span>
+                <span class="toggle-icon">▼</span>
             </div>
-            <div class="custom-settings" id="customSettings">
-                <label>
-                    Yükseklik:
-                    <input type="number" id="customHeight" min="5" max="30" value="10">
-                </label>
-                <label>
-                    Genişlik:
-                    <input type="number" id="customWidth" min="5" max="50" value="10">
-                </label>
-                <label>
-                    Mayın:
-                    <input type="number" id="customMines" min="1" max="999" value="10">
-                </label>
-                <button class="diff-btn" onclick="game.applyCustomSettings()">Uygula</button>
+            <div class="collapsible-content" id="customSizeContent">
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <label style="display: flex; flex-direction: column; gap: 5px; flex: 1;">
+                        <strong>Satır Sayısı:</strong>
+                        <input type="number" id="customRows" min="5" max="30" value="10" 
+                               style="padding: 5px; border: 2px solid; border-color: #808080 #fff #fff #808080; background: #fff;">
+                    </label>
+                    <label style="display: flex; flex-direction: column; gap: 5px; flex: 1;">
+                        <strong>Sütun Sayısı:</strong>
+                        <input type="number" id="customCols" min="5" max="30" value="10" 
+                               style="padding: 5px; border: 2px solid; border-color: #808080 #fff #fff #808080; background: #fff;">
+                    </label>
+                </div>
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <label style="display: flex; flex-direction: column; gap: 5px; flex: 1;">
+                        <strong>Mayın Sayısı:</strong>
+                        <input type="number" id="customMines" min="1" max="200" value="10" 
+                               style="padding: 5px; border: 2px solid; border-color: #808080 #fff #fff #808080; background: #fff;">
+                    </label>
+                </div>
+                <button id="applyCustomSettings" style="padding: 8px 16px; background: #c0c0c0; border: 3px solid; border-color: #fff #808080 #808080 #fff; cursor: pointer; font-weight: bold; width: 100%;">
+                    Özel Ayarları Uygula
+                </button>
+                <div style="font-size: 11px; color: #666; margin-top: 5px;">
+                    Özel boyutlar için mayın sayısı toplam kare sayısının %15-20'si arasında olmalıdır
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 20px;">Zorluk Seviyesi</h3>
+            <div class="difficulty-btns">
+                <button class="diff-btn active" data-difficulty="easy">Kolay (%10)</button>
+                <button class="diff-btn" data-difficulty="medium">Orta (%15)</button>
+                <button class="diff-btn" data-difficulty="hard">Zor (%25)</button>
             </div>
             
             <h3 style="margin-top: 20px;">Ses Ayarları</h3>
             <div style="padding: 10px 0;">
                 <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                    <input type="checkbox" id="soundToggle" checked 
+                    <input type="checkbox" id="soundToggle" 
                            onchange="game.toggleSound(this.checked)"
                            style="transform: scale(1.2);">
                     <strong>Patlama Sesi</strong>
@@ -742,6 +868,14 @@
                 <li><strong>Sayılar:</strong> Etrafındaki mayın sayısını gösterir</li>
                 <li><strong>İpucu:</strong> İlk tıklamanız asla mayın olmaz</li>
             </ul>
+            
+            <h4 style="margin-top: 20px;">Teknik Detaylar:</h4>
+            <ul>
+                <li><strong>3BV (Board Benchmark Value):</strong> Tahtayı çözmek için gereken minimum tıklama sayısı. Boş alanlar ve sayılar dahil edilir.</li>
+                <li><strong>3BV/s:</strong> Saniyedeki 3BV değeri. Ne kadar yüksekse o kadar hızlı oynuyorsunuz demektir.</li>
+                <li><strong>Verimlilik:</strong> 3BV / Toplam Sol Tıklama oranı. %100'e yakın olması ideal oyunu gösterir.</li>
+                <li><strong>Deneyim:</strong> Oyun performansınıza göre kazanılan yıldız sayısı.</li>
+            </ul>
         </div>
     </div>
 
@@ -753,13 +887,14 @@
         class Minesweeper {
             constructor() {
                 this.difficulties = {
-                    beginner: { rows: 9, cols: 9, mines: 10 },
-                    intermediate: { rows: 16, cols: 16, mines: 40 },
-                    expert: { rows: 16, cols: 30, mines: 99 }
+                    easy: { rows: 10, cols: 10, mines: 10, ratio: 0.1 }, // %10 mayın
+                    medium: { rows: 10, cols: 10, mines: 15, ratio: 0.15 }, // %15 mayın
+                    hard: { rows: 10, cols: 10, mines: 25, ratio: 0.25 }, // %25 mayın
+                    custom: { rows: 10, cols: 10, mines: 10, ratio: 0.1 }
                 };
                 
-                this.currentDifficulty = 'beginner';
-                this.config = { ...this.difficulties.beginner };
+                this.currentDifficulty = 'easy';
+                this.config = { ...this.difficulties.easy };
                 this.board = [];
                 this.revealed = [];
                 this.flagged = [];
@@ -776,12 +911,13 @@
                 this.rightClicks = 0;
                 this.bbbv = 0; // Board Benchmark Value (3BV)
                 this.bbbvSolved = 0;
+                this.initialEstimatedTime = 0; // Oyun başında hesaplanan tahmini süre
                 
                 // Tap delay ayarı
                 this.tapDelay = parseInt(localStorage.getItem('tapDelay') || '200');
                 
-                // Ses ayarı
-                this.soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
+                // Ses ayarı - varsayılan olarak kapalı
+                this.soundEnabled = localStorage.getItem('soundEnabled') === 'true';
                 
                 this.loadStats();
                 this.init();
@@ -825,12 +961,20 @@
                 this.rightClicks = 0;
                 this.bbbv = 0;
                 this.bbbvSolved = 0;
+                this.initialEstimatedTime = 0;
                 
                 this.stopTimer();
                 this.createBoard();
+                
+                // Tahmini süre için mayınları yerleştir ve 3BV hesapla
+                this.placeMinesForEstimation();
+                
                 this.renderBoard();
                 this.updateCounters();
                 this.updateResetButton('🙂');
+                
+                // Tahmini süreyi hesapla ve göster (sadece bir kez)
+                this.showEstimatedTime();
                 
                 // Detaylı istatistik panelini gizle
                 document.getElementById('detailedStats').classList.remove('active');
@@ -849,18 +993,21 @@
                 );
             }
 
+            placeMinesForEstimation() {
+                // Tahmini süre için mayınları yerleştir (rastgele bir alan seç)
+                const randomRow = Math.floor(Math.random() * this.config.rows);
+                const randomCol = Math.floor(Math.random() * this.config.cols);
+                this.placeMines(randomRow, randomCol);
+            }
+
             placeMines(excludeRow, excludeCol) {
                 let minesPlaced = 0;
-                const excludeCells = this.getNeighbors(excludeRow, excludeCol);
-                excludeCells.push([excludeRow, excludeCol]);
 
                 while (minesPlaced < this.config.mines) {
                     const row = Math.floor(Math.random() * this.config.rows);
                     const col = Math.floor(Math.random() * this.config.cols);
                     
-                    const isExcluded = excludeCells.some(([r, c]) => r === row && c === col);
-                    
-                    if (this.board[row][col] !== 'M' && !isExcluded) {
+                    if (this.board[row][col] !== 'M') {
                         this.board[row][col] = 'M';
                         minesPlaced++;
                     }
@@ -1049,13 +1196,22 @@
                 if (this.gameOver || this.gameWon) return;
                 if (this.flagged[row][col]) return;
                 if (this.revealed[row][col]) return;
+                
+                // Settings ekranındayken oyun oynanamaz
+                const settings = document.querySelector('.settings');
+                if (settings.classList.contains('active')) return;
 
                 this.leftClicks++;
 
                 if (this.firstClick) {
+                    // Mayınları gerçek oyun için yeniden yerleştir
+                    this.createBoard();
                     this.placeMines(row, col);
                     this.firstClick = false;
                     this.startTimer();
+                    
+                    // Board'u yeniden render et
+                    this.renderBoard();
                 }
 
                 if (this.board[row][col] === 'M') {
@@ -1090,6 +1246,10 @@
             handleDoubleClick(e, row, col) {
                 e.preventDefault();
                 if (this.gameOver || this.gameWon) return;
+                
+                // Settings ekranındayken oyun oynanamaz
+                const settings = document.querySelector('.settings');
+                if (settings.classList.contains('active')) return;
                 
                 // Eğer hücre açılmamışsa, double click ile bayrak koy/kaldır
                 if (!this.revealed[row][col]) {
@@ -1156,6 +1316,10 @@
                 e.preventDefault();
                 if (this.gameOver || this.gameWon) return;
                 if (this.revealed[row][col]) return;
+                
+                // Settings ekranındayken oyun oynanamaz
+                const settings = document.querySelector('.settings');
+                if (settings.classList.contains('active')) return;
 
                 this.rightClicks++;
 
@@ -1296,8 +1460,8 @@
                 
                 const bbbvPerSecond = this.timer > 0 ? (this.bbbvSolved / this.timer).toFixed(4) : 0;
                 
-                // Tahmini ideal süre (Becker'in formülü benzeri basit hesaplama)
-                const estimatedTime = (this.bbbv * 1.5 + this.config.mines * 0.3).toFixed(3);
+                // Oyun başında hesaplanan tahmini süreyi kullan (tutarlılık için)
+                const estimatedTime = this.initialEstimatedTime.toFixed(1);
                 
                 // Experience hesaplama
                 let experience = 0;
@@ -1317,8 +1481,8 @@
                     else if (timeRatio < 2) experience += 1;
                     
                     // Zorluk bonusu
-                    if (this.currentDifficulty === 'expert') experience *= 2;
-                    else if (this.currentDifficulty === 'intermediate') experience *= 1.5;
+                    if (this.currentDifficulty === 'hard') experience *= 2;
+                    else if (this.currentDifficulty === 'medium') experience *= 1.5;
                 }
                 
                 // Göster
@@ -1399,7 +1563,10 @@
             }
 
             setupEventListeners() {
-                document.getElementById('resetBtn').addEventListener('click', () => this.init());
+                document.getElementById('resetBtn').addEventListener('click', () => {
+                    this.init();
+                    this.closeSettings();
+                });
                 
                 // Menu butonu
                 document.getElementById('menuBtn').addEventListener('click', () => {
@@ -1408,11 +1575,22 @@
                     const stats = document.querySelector('.stats');
                     const instructions = document.querySelector('.instructions');
                     const detailedStats = document.getElementById('detailedStats');
+                    const gameBoard = document.querySelector('.game-board');
+                    const estimatedTime = document.getElementById('estimatedTime');
                     
                     menuBtn.classList.toggle('active');
                     settings.classList.toggle('active');
                     stats.classList.toggle('active');
                     instructions.classList.toggle('active');
+                    
+                    // Settings aktifken sadece oyun alanını gizle
+                    if (settings.classList.contains('active')) {
+                        gameBoard.style.display = 'none';
+                        if (estimatedTime) estimatedTime.style.display = 'none';
+                    } else {
+                        gameBoard.style.display = 'flex';
+                        if (estimatedTime) estimatedTime.style.display = 'block';
+                    }
                     
                     // Detaylı istatistikler sadece oyun bittiyse görünsün
                     if (this.gameOver || this.gameWon) {
@@ -1427,32 +1605,126 @@
                         document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
                         e.target.classList.add('active');
                         
-                        if (difficulty === 'custom') {
-                            document.getElementById('customSettings').classList.add('active');
-                        } else {
-                            document.getElementById('customSettings').classList.remove('active');
-                            this.currentDifficulty = difficulty;
-                            this.config = { ...this.difficulties[difficulty] };
-                            this.init();
-                        }
+                        this.currentDifficulty = difficulty;
+                        this.config = { ...this.difficulties[difficulty] };
+                        
+                        // Mayın sayısını toplam kare sayısına göre hesapla
+                        this.calculateMinesForDifficulty();
+                        
+                        this.updateCustomInputs();
+                        this.init();
                     });
                 });
+
+                // Özel ayarlar butonu
+                document.getElementById('applyCustomSettings').addEventListener('click', () => {
+                    this.applyCustomSettings();
+                });
+
+                // Collapsible özel boyutlar
+                document.getElementById('customSizeHeader').addEventListener('click', () => {
+                    this.toggleCustomSize();
+                });
+
+                // Input alanlarını güncelle
+                this.updateCustomInputs();
+                
+                // Özel boyutlar için mayın sayısını otomatik hesapla
+                this.setupCustomSizeListeners();
             }
 
+
             applyCustomSettings() {
-                const height = parseInt(document.getElementById('customHeight').value);
-                const width = parseInt(document.getElementById('customWidth').value);
+                const rows = parseInt(document.getElementById('customRows').value);
+                const cols = parseInt(document.getElementById('customCols').value);
                 const mines = parseInt(document.getElementById('customMines').value);
                 
-                const maxMines = (height * width) - 9; // İlk tıklama + komşuları için yer bırak
-                
-                if (mines > maxMines) {
-                    alert(`Maksimum mayın sayısı ${maxMines} olabilir!`);
+                // Geçerlilik kontrolü
+                if (rows < 5 || rows > 30 || cols < 5 || cols > 30) {
+                    alert('Satır ve sütun sayısı 5-30 arasında olmalıdır!');
                     return;
                 }
                 
-                this.config = { rows: height, cols: width, mines: mines };
+                if (mines < 1 || mines > 200) {
+                    alert('Mayın sayısı 1-200 arasında olmalıdır!');
+                    return;
+                }
+                
+                const totalCells = rows * cols;
+                if (mines >= totalCells) {
+                    alert('Mayın sayısı toplam kare sayısından az olmalıdır!');
+                    return;
+                }
+                
+                // Özel ayarları uygula
+                this.currentDifficulty = 'custom';
+                this.config = { rows, cols, mines, ratio: mines / totalCells };
+                
+                // Tüm zorluk butonlarını deaktif et
+                document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+                
                 this.init();
+                this.closeSettings();
+                
+                // Başarı mesajı
+                alert(`Özel ayarlar uygulandı!\nBoyut: ${rows}x${cols}\nMayın: ${mines}`);
+            }
+
+            toggleCustomSize() {
+                const header = document.getElementById('customSizeHeader');
+                const content = document.getElementById('customSizeContent');
+                const icon = header.querySelector('.toggle-icon');
+                
+                const isActive = content.classList.contains('active');
+                
+                if (isActive) {
+                    content.classList.remove('active');
+                    header.classList.remove('active');
+                    icon.classList.remove('rotated');
+                } else {
+                    content.classList.add('active');
+                    header.classList.add('active');
+                    icon.classList.add('rotated');
+                }
+            }
+
+            calculateMinesForDifficulty() {
+                if (this.currentDifficulty === 'custom') return;
+                
+                const totalCells = this.config.rows * this.config.cols;
+                const ratio = this.difficulties[this.currentDifficulty].ratio;
+                const calculatedMines = Math.ceil(totalCells * ratio);
+                
+                // Minimum 1, maksimum toplam kare sayısının %80'i
+                this.config.mines = Math.max(1, Math.min(calculatedMines, Math.floor(totalCells * 0.8)));
+            }
+
+            setupCustomSizeListeners() {
+                const rowsInput = document.getElementById('customRows');
+                const colsInput = document.getElementById('customCols');
+                const minesInput = document.getElementById('customMines');
+                
+                const updateMinesForCustomSize = () => {
+                    const rows = parseInt(rowsInput.value) || 10;
+                    const cols = parseInt(colsInput.value) || 10;
+                    const totalCells = rows * cols;
+                    
+                    // Kolay seviye oranını kullan (%10)
+                    const calculatedMines = Math.ceil(totalCells * 0.1);
+                    const maxMines = Math.floor(totalCells * 0.8);
+                    const finalMines = Math.max(1, Math.min(calculatedMines, maxMines));
+                    
+                    minesInput.value = finalMines;
+                };
+                
+                rowsInput.addEventListener('input', updateMinesForCustomSize);
+                colsInput.addEventListener('input', updateMinesForCustomSize);
+            }
+
+            updateCustomInputs() {
+                document.getElementById('customRows').value = this.config.rows;
+                document.getElementById('customCols').value = this.config.cols;
+                document.getElementById('customMines').value = this.config.mines;
             }
 
             updateTapDelay(value) {
@@ -1489,6 +1761,38 @@
                 localStorage.setItem('gamesLost', this.stats.gamesLost);
                 
                 this.updateStatsDisplay();
+            }
+
+            showEstimatedTime() {
+                // Sadece oyun başlamadan önce tahmini süreyi hesapla ve göster
+                if (this.firstClick) {
+                    const estimatedTime = (this.bbbv * 1.5 + this.config.mines * 0.3).toFixed(1);
+                    this.initialEstimatedTime = parseFloat(estimatedTime); // Tahmini süreyi sakla
+                    document.getElementById('estimatedTimeText').textContent = `Tahmini süre: ${estimatedTime} saniye`;
+                    document.getElementById('estimatedTime').style.display = 'block';
+                }
+            }
+
+
+            closeSettings() {
+                // Settings ekranını kapat
+                const menuBtn = document.getElementById('menuBtn');
+                const settings = document.querySelector('.settings');
+                const stats = document.querySelector('.stats');
+                const instructions = document.querySelector('.instructions');
+                const detailedStats = document.getElementById('detailedStats');
+                const gameBoard = document.querySelector('.game-board');
+                const estimatedTime = document.getElementById('estimatedTime');
+                
+                menuBtn.classList.remove('active');
+                settings.classList.remove('active');
+                stats.classList.remove('active');
+                instructions.classList.remove('active');
+                detailedStats.classList.remove('active');
+                
+                // Oyun alanını tekrar göster
+                gameBoard.style.display = 'flex';
+                if (estimatedTime) estimatedTime.style.display = 'block';
             }
 
             updateStatsDisplay() {
