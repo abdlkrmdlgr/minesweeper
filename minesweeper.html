@@ -1147,7 +1147,10 @@
                                 if (!this.revealed[row][col] && !touchMoved) {
                                     e.preventDefault();
                                     this.handleRightClick(e, row, col);
-                                    navigator.vibrate && navigator.vibrate(50);
+                                    // iPhone haptic feedback - hafif tek titreşim
+                                    if (navigator.vibrate) {
+                                        navigator.vibrate(30);
+                                    }
                                     doubleTapProcessed = true; // Uzun basma oldu
                                     clearTimeout(singleTapTimer);
                                 }
@@ -1184,7 +1187,6 @@
                                     this.handleDoubleClick(e, row, col);
                                 } else {
                                     this.handleRightClick(e, row, col);
-                                    navigator.vibrate && navigator.vibrate(30);
                                 }
                             } else {
                                 // Single tap - tapDelay sonra işle (double tap için şans ver)
