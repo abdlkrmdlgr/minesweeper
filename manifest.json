@@ -2,6 +2,7 @@
   "name": "Mayın Tarlası - Minesweeper",
   "short_name": "Minesweeper",
   "description": "Klasik Mayın Tarlası oyunu - PWA",
+  "version": "2.0.0",
   "start_url": "./minesweeper.html",
   "display": "standalone",
   "background_color": "#667eea",

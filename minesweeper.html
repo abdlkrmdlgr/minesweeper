@@ -8,7 +8,7 @@
     <!-- PWA Meta Tags -->
     <meta name="description" content="Klasik Mayın Tarlası oyunu - Offline oynanabilir">
     <meta name="theme-color" content="#667eea">
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="manifest.json?v=2.0.0">
     
     <!-- iOS Safari -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1835,9 +1835,21 @@
         // Service Worker kaydı (PWA)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
+                navigator.serviceWorker.register('./service-worker.js?v=2.0.0')
                     .then(registration => {
                         console.log('Service Worker kayıt başarılı:', registration.scope);
+                        
+                        // Cache temizleme
+                        if ('caches' in window) {
+                            caches.keys().then(cacheNames => {
+                                cacheNames.forEach(cacheName => {
+                                    if (cacheName !== 'minesweeper-v2') {
+                                        caches.delete(cacheName);
+                                        console.log('Eski cache temizlendi:', cacheName);
+                                    }
+                                });
+                            });
+                        }
                     })
                     .catch(error => {
                         console.log('Service Worker kayıt hatası:', error);

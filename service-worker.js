@@ -1,4 +1,4 @@
-const CACHE_NAME = 'minesweeper-v1';
+const CACHE_NAME = 'minesweeper-v2';
 const urlsToCache = [
   './minesweeper.html',
   './manifest.json'
