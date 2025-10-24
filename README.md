@@ -1,226 +1,226 @@
-# 💣 Minesweeper - Klasik Mayın Tarlası
+# 💣 Minesweeper - Classic Mine Sweeper Game
 
-Modern web teknolojileri ile geliştirilmiş, PWA (Progressive Web App) destekli klasik Mayın Tarlası oyunu. Hem masaüstü hem de mobil cihazlarda mükemmel çalışır.
+A modern Progressive Web App (PWA) implementation of the classic Minesweeper game, built with web technologies. Works perfectly on both desktop and mobile devices.
 
-## ✨ Özellikler
+## ✨ Features
 
-### 🎮 Oyun Özellikleri
-- **Klasik Minesweeper deneyimi** - Orijinal oyunun tüm kuralları
-- **3 zorluk seviyesi** - Kolay (%10), Orta (%15), Zor (%25)
-- **Özel boyutlar** - 5x5'ten 30x30'a kadar özelleştirilebilir
-- **Gelişmiş istatistikler** - 3BV, verimlilik, deneyim puanları
-- **Tahmini süre** - Oyun başında hesaplanan süre tahmini
-- **Patlama efektleri** - Görsel ve ses efektleri
-- **Haptic feedback** - Uzun basma sırasında titreşim (destekleyen cihazlarda)
+### 🎮 Game Features
+- **Classic Minesweeper experience** - All original game rules
+- **3 difficulty levels** - Easy (10%), Medium (15%), Hard (25%)
+- **Custom dimensions** - Customizable from 5x5 to 30x30
+- **Advanced statistics** - 3BV, efficiency, experience points
+- **Estimated time** - Pre-calculated time estimation
+- **Explosion effects** - Visual and audio effects
+- **Haptic feedback** - Vibration support on compatible devices
 
-### 📱 PWA Özellikleri
-- **Offline çalışır** - İnternet olmadan oynanabilir
-- **Ana ekrana eklenebilir** - Gerçek uygulama gibi
-- **Hızlı yüklenir** - Cache sayesinde anında açılır
-- **Tam ekran** - Tarayıcı çubuğu olmadan
-- **Mobil uyumlu** - Touch kontroller
+### 📱 PWA Features
+- **Works offline** - Play without internet connection
+- **Installable** - Add to home screen like a real app
+- **Fast loading** - Instant opening thanks to caching
+- **Full screen** - No browser bars
+- **Mobile optimized** - Touch controls
 
-### 🎯 Kontroller
-- **Tek Tık/Tap:** Hücreyi aç
-- **Çift Tık/Tap:** Kapalı hücrede → Bayrak koy/kaldır | Açık hücrede → Etrafı aç
-- **Sağ Tık:** Bayrak koy/kaldır (PC)
-- **Uzun Bas (0.2s):** Bayrak koy/kaldır (Mobil)
-- **Ayarlanabilir tap gecikmesi** - Mobil deneyim için optimize edilmiş
+### 🎯 Controls
+- **Single Click/Tap:** Reveal cell
+- **Double Click/Tap:** Closed cell → Flag/unflag | Open cell → Reveal surroundings
+- **Right Click:** Flag/unflag (PC)
+- **Long Press (0.2s):** Flag/unflag (Mobile)
+- **Adjustable tap delay** - Optimized for mobile experience
 
-## 🚀 Kurulum ve Çalıştırma
+## 🚀 Installation and Setup
 
-### Yerel Geliştirme
+### Local Development
 ```bash
-# Projeyi klonlayın
+# Clone the project
 git clone <repository-url>
 cd minesweeper
 
-# Basit HTTP sunucusu başlatın
+# Start a simple HTTP server
 # Python 3
 python3 -m http.server 8000
 
-# Node.js (npx ile)
+# Node.js (with npx)
 npx serve .
 
-# Tarayıcıda açın: http://localhost:8000/minesweeper.html
+# Open in browser: http://localhost:8000/minesweeper.html
 ```
 
-### PWA Olarak Yükleme
+### Install as PWA
 
 #### 📱 Android (Chrome)
-1. Chrome tarayıcıda `minesweeper.html` dosyasını açın
-2. Sağ üst köşedeki ⋮ (üç nokta) menüsüne tıklayın
-3. **"Ana ekrana ekle"** veya **"Yükle"** seçeneğini seçin
-4. Uygulama adını onaylayın
-5. ✅ Ana ekranınızda artık uygulama var!
+1. Open `minesweeper.html` in Chrome browser
+2. Tap the ⋮ (three dots) menu in the top right
+3. Select **"Add to Home screen"** or **"Install"**
+4. Confirm the app name
+5. ✅ App is now on your home screen!
 
 #### 🍎 iOS (Safari)
-1. Safari'de `minesweeper.html` dosyasını açın
-2. Alt kısımda Paylaş butonuna (📤) tıklayın
-3. Aşağı kaydırın ve **"Ana Ekrana Ekle"** seçeneğini bulun
-4. **"Ekle"** butonuna tıklayın
-5. ✅ Ana ekranınızda artık uygulama var!
+1. Open `minesweeper.html` in Safari
+2. Tap the Share button (📤) at the bottom
+3. Scroll down and find **"Add to Home Screen"**
+4. Tap **"Add"**
+5. ✅ App is now on your home screen!
 
-#### 💻 Masaüstü (Chrome/Edge)
-1. Tarayıcıda `minesweeper.html` dosyasını açın
-2. Adres çubuğunun sağında görünen yükleme ikonuna (⊕) tıklayın
-3. **"Yükle"** butonuna tıklayın
-4. ✅ Uygulama artık masaüstünüzde!
+#### 💻 Desktop (Chrome/Edge)
+1. Open `minesweeper.html` in browser
+2. Click the install icon (⊕) in the address bar
+3. Click **"Install"**
+4. ✅ App is now on your desktop!
 
-## 🌐 Web Sunucusunda Yayınlama
+## 🌐 Deploy to Web Server
 
-PWA'ların tam olarak çalışması için HTTPS gereklidir. İşte bazı ücretsiz seçenekler:
+PWAs require HTTPS to work properly. Here are some free options:
 
-### Ücretsiz Hosting Seçenekleri
+### Free Hosting Options
 
-1. **GitHub Pages** (Önerilen)
-   - Repoyu GitHub'a yükle
+1. **GitHub Pages** (Recommended)
+   - Upload repo to GitHub
    - Settings > Pages > Deploy from main branch
-   - Otomatik HTTPS
+   - Automatic HTTPS
 
 2. **Netlify**
-   - Klasörü Netlify'a sürükle-bırak
-   - Otomatik HTTPS
+   - Drag and drop folder to Netlify
+   - Automatic HTTPS
 
 3. **Vercel**
-   - `vercel` komutuyla deploy et
-   - Otomatik HTTPS
+   - Deploy with `vercel` command
+   - Automatic HTTPS
 
 4. **Cloudflare Pages**
-   - GitHub'dan otomatik deploy
-   - Ücretsiz ve hızlı
+   - Auto-deploy from GitHub
+   - Free and fast
 
-## 🎮 Nasıl Oynanır
+## 🎮 How to Play
 
-### Temel Kurallar
-- **Hedef:** Tüm mayınları bayraklayarak veya mayınsız hücreleri açarak kazanın
-- **Sayılar:** Etrafındaki mayın sayısını gösterir
-- **İpucu:** İlk tıklamanız asla mayın olmaz
+### Basic Rules
+- **Goal:** Win by flagging all mines or revealing all safe cells
+- **Numbers:** Show the count of adjacent mines
+- **Hint:** Your first click will never be a mine
 
-### Kontroller
-- **Tek Tık/Tap:** Hücreyi aç
-- **Çift Tık/Tap:** 
-  - Kapalı hücrede → Bayrak koy/kaldır
-  - Açık hücrede → Etrafı aç (Chord işlemi)
-- **Sağ Tık:** Bayrak koy/kaldır (PC)
-- **Uzun Bas (0.2s):** Bayrak koy/kaldır (Mobil)
+### Controls
+- **Single Click/Tap:** Reveal cell
+- **Double Click/Tap:** 
+  - Closed cell → Flag/unflag
+  - Open cell → Reveal surroundings (Chord operation)
+- **Right Click:** Flag/unflag (PC)
+- **Long Press (0.2s):** Flag/unflag (Mobile)
 
-### Zorluk Seviyeleri
-- **Kolay:** 10x10, 10 mayın (%10)
-- **Orta:** 10x10, 15 mayın (%15)
-- **Zor:** 10x10, 25 mayın (%25)
-- **Özel:** 5x5'ten 30x30'a kadar özelleştirilebilir
+### Difficulty Levels
+- **Easy:** 10x10, 10 mines (10%)
+- **Medium:** 10x10, 15 mines (15%)
+- **Hard:** 10x10, 25 mines (25%)
+- **Custom:** Customizable from 5x5 to 30x30
 
-## 📊 İstatistikler ve Analiz
+## 📊 Statistics and Analysis
 
-### Temel İstatistikler
-- Oyunlar oynandı
-- Kazanılan oyunlar
-- Kaybedilen oyunlar
-- Kazanma oranı
-- En iyi süre
+### Basic Statistics
+- Games played
+- Games won
+- Games lost
+- Win rate
+- Best time
 
-### Gelişmiş İstatistikler (3BV Sistemi)
-- **3BV (Board Benchmark Value):** Tahtayı çözmek için gereken minimum tıklama sayısı
-- **3BV/s:** Saniyedeki 3BV değeri (hız göstergesi)
-- **Verimlilik:** 3BV / Toplam Sol Tıklama oranı
-- **Deneyim:** Oyun performansınıza göre kazanılan yıldız sayısı
-- **Tahmini süre:** Oyun başında hesaplanan süre tahmini
+### Advanced Statistics (3BV System)
+- **3BV (Board Benchmark Value):** Minimum clicks required to solve the board
+- **3BV/s:** 3BV per second (speed indicator)
+- **Efficiency:** 3BV / Total Left Clicks ratio
+- **Experience:** Stars earned based on performance
+- **Estimated time:** Pre-calculated time estimation
 
-## 🔧 Teknik Detaylar
+## 🔧 Technical Details
 
-### Kullanılan Teknolojiler
+### Technologies Used
 - **HTML5** - Semantic markup
 - **CSS3** - Modern styling, animations, responsive design
 - **Vanilla JavaScript** - Framework-free, performant
 - **PWA** - Service Worker, Web App Manifest
 - **LocalStorage** - Offline data persistence
 
-### Dosya Yapısı
+### File Structure
 ```
 minesweeper/
-├── minesweeper.html      # Ana oyun dosyası
+├── minesweeper.html      # Main game file
 ├── manifest.json         # PWA manifest
 ├── service-worker.js     # Service Worker (PWA)
-├── explosion.mp3         # Patlama ses efekti
-├── PWA_KURULUM.md        # PWA kurulum rehberi
-└── README.md            # Bu dosya
+├── explosion.mp3         # Explosion sound effect
+├── PWA_KURULUM.md        # PWA installation guide (Turkish)
+└── README.md            # This file
 ```
 
-### Özellikler
-- **Responsive Design** - Mobil ve masaüstü uyumlu
-- **Touch Optimized** - Mobil dokunma kontrolleri
-- **Offline First** - İnternet olmadan çalışır
-- **Performance** - Hızlı yükleme ve çalışma
-- **Accessibility** - Erişilebilir tasarım
+### Features
+- **Responsive Design** - Mobile and desktop compatible
+- **Touch Optimized** - Mobile touch controls
+- **Offline First** - Works without internet
+- **Performance** - Fast loading and execution
+- **Accessibility** - Accessible design
 
-## 🎨 Özelleştirme
+## 🎨 Customization
 
-### Ses Ayarları
-- Patlama sesi açma/kapama
-- Ses seviyesi ayarı
+### Audio Settings
+- Toggle explosion sound on/off
+- Sound volume adjustment
 
-### Mobil Kontroller
-- Tap gecikmesi ayarı (50-300ms)
-- Uzun basma süresi (200ms)
+### Mobile Controls
+- Tap delay setting (50-300ms)
+- Long press duration (200ms)
 - Haptic feedback (iPhone)
 
-### Görsel Ayarlar
-- Klasik Windows 95 tarzı arayüz
-- Animasyonlu patlama efektleri
-- Responsive hücre boyutları
+### Visual Settings
+- Classic Windows 95 style interface
+- Animated explosion effects
+- Responsive cell sizes
 
-## 🐛 Sorun Giderme
+## 🐛 Troubleshooting
 
-### PWA Sorunları
-**"Ana ekrana ekle" görünmüyor?**
-- HTTPS kullanılıyor olmalı (localhost hariç)
-- manifest.json ve service-worker.js erişilebilir olmalı
+### PWA Issues
+**"Add to Home Screen" not showing?**
+- Must use HTTPS (except localhost)
+- manifest.json and service-worker.js must be accessible
 
-**Offline çalışmıyor?**
-- Sayfayı en az bir kez online yükleyin
-- Service Worker'ın kayıtlı olduğunu kontrol edin (DevTools > Application)
+**Not working offline?**
+- Load the page online at least once
+- Check Service Worker is registered (DevTools > Application)
 
-**Güncellemeler görünmüyor?**
-- Tarayıcı cache'ini temizleyin
-- Service Worker'ı unregister edip tekrar register edin
+**Updates not showing?**
+- Clear browser cache
+- Unregister and re-register Service Worker
 
-### Oyun Sorunları
-**Mobilde çift tık çalışmıyor?**
-- Tap gecikmesi ayarını artırın (Settings > Mobil Kontroller)
-- Uzun basma süresini azaltın
+### Game Issues
+**Double tap not working on mobile?**
+- Increase tap delay setting (Settings > Mobile Controls)
+- Reduce long press duration
 
-**Ses çalmıyor?**
-- Tarayıcı ses ayarlarını kontrol edin
-- Ses dosyasının yüklendiğinden emin olun
+**Sound not playing?**
+- Check browser audio settings
+- Ensure sound file is loaded
 
-## 📝 Lisans
+## 📝 License
 
-Bu proje açık kaynak kodludur ve eğitim amaçlı geliştirilmiştir.
+This project is open source and developed for educational purposes.
 
-## 👨‍💻 Geliştirici
+## 👨‍💻 Developer
 
 **Abdülkerim DÜLGER**
 - LinkedIn: [abdlkrmdlgr](https://linkedin.com/in/abdulkerimdulger)
 - Website: [girisim.dev](https://girisim.dev)
 
-## 🤝 Katkıda Bulunma
+## 🤝 Contributing
 
-1. Fork yapın
-2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
-3. Commit yapın (`git commit -m 'Add amazing feature'`)
-4. Push yapın (`git push origin feature/amazing-feature`)
-5. Pull Request oluşturun
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## 📈 Gelecek Planları
+## 📈 Future Plans
 
-- [ ] Multiplayer modu
-- [ ] Farklı temalar
-- [ ] Daha fazla istatistik
-- [ ] Sosyal paylaşım
-- [ ] Başarı sistemi
-- [ ] Günlük görevler
+- [ ] Multiplayer mode
+- [ ] Different themes
+- [ ] More statistics
+- [ ] Social sharing
+- [ ] Achievement system
+- [ ] Daily challenges
 
 ---
 
-**Not:** Bu oyun tamamen offline çalışır ve kişisel verilerinizi toplamaz. Tüm istatistikler cihazınızda saklanır.
+**Note:** This game works completely offline and does not collect personal data. All statistics are stored locally on your device.
