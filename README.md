@@ -143,7 +143,6 @@ minesweeper/
 ├── manifest.json         # PWA manifest
 ├── service-worker.js     # Service Worker (PWA)
 ├── explosion.mp3         # Explosion sound effect
-├── PWA_KURULUM.md        # PWA installation guide (Turkish)
 └── README.md            # This file
 ```
 
